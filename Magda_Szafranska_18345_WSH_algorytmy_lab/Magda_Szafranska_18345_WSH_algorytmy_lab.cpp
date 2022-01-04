@@ -6,23 +6,46 @@
 
 using namespace std;
 
+// Prototypes of functions (declarations)
 double** CreateTab(int rowCount, int colCount);
 void RandomTab(int rowCount, int colCount, double** tab);
 void PrintTab(int rowCount, int colCount, double** tab);
 void DeleteTab(int rowCount, int colCount, double** tab);
+void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
+void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 
 int main()
 {
     int rowCount = 5;
     int colCount = 4;
+
     double** tab1 = CreateTab(rowCount, colCount);
+    double** tab2 = CreateTab(rowCount, colCount);
+    double** tab3 = CreateTab(rowCount, colCount);      // to keep the result of operations
+
+    cout << "Matrix 1" << endl;
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
 
-    // deleting created matrix
+    cout << endl << "Matrix 2" << endl;
+    RandomTab(rowCount, colCount, tab2);
+    PrintTab(rowCount, colCount, tab2);
+
+    cout << endl << "Addition matrix 1 and 2" << endl;
+    AddTab(rowCount, colCount, tab1, tab2, tab3);
+    PrintTab(rowCount, colCount, tab3);
+
+    cout << endl << "Subtraction matrix 1 and 2" << endl;
+    SubtractTab(rowCount, colCount, tab1, tab2, tab3);
+    PrintTab(rowCount, colCount, tab3);
+
+    // deleting all created arrays
     DeleteTab(rowCount, colCount, tab1);
+    DeleteTab(rowCount, colCount, tab2);
+    DeleteTab(rowCount, colCount, tab3);
 }
 
+// Definitions of the functions (the bodies of the functions)
 double** CreateTab(int rowCount, int colCount)
 {
     double** tab = new double* [rowCount];
@@ -61,4 +84,24 @@ void DeleteTab(int rowCount, int colCount, double** tab)
         delete[] tab[i];
 
     delete[] tab;
+}
+void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3)
+{
+    for (int i = 0; i < rowCount; ++i)
+    {
+        for (int j = 0; j < colCount; ++j)
+        {
+            tab3[i][j] = tab1[i][j] + tab2[i][j];
+        }
+    }
+}
+void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3)
+{
+    for (int i = 0; i < rowCount; ++i)
+    {
+        for (int j = 0; j < colCount; ++j)
+        {
+            tab3[i][j] = tab1[i][j] - tab2[i][j];
+        }
+    }
 }
