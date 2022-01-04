@@ -15,21 +15,33 @@ void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** t
 void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 void CopyTab(int rowCount, int colCount, double** tab1, double** tab2);
 void TransTab(int rowCount, int colCount, double** tab, double** temp_tab);
+void MulTab(int rowCount, int colCount, int colCount2, double** tab1, double** tab2, double** tab3);    // colCount2 to liczba kolumn wynikowej
 
 int main()
 {
     int rowCount = 5;
     int colCount = 4;
+    int colCount2 = 3;                                          // another dimension to multiple arrays
 
     double** tab1 = CreateTab(rowCount, colCount);
     double** tab2 = CreateTab(rowCount, colCount);
-    double** tab3 = CreateTab(rowCount, colCount);      // to keep the result of operations
-    double** tab4 = CreateTab(rowCount, colCount);      // to copy here another values of an array
-    double** transTab = CreateTab(colCount, rowCount);  // to transposition an array
+    double** tab3 = CreateTab(rowCount, colCount);              // to keep the result of operations
+    double** tab4 = CreateTab(rowCount, colCount);              // to copy here another values of an array
+    double** transTab = CreateTab(colCount, rowCount);          // to transposition an array
+    double** tab5 = CreateTab(colCount, colCount2);             // to multiplication for the second array
+    double** tabMultiplication = CreateTab(rowCount, colCount2);// to keep the result of multiplication two arrays
 
     cout << "Matrix 1" << endl;
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
+
+    cout << endl << "Matrix 5 to multiplication" << endl;
+    RandomTab(colCount, colCount2, tab5);
+    PrintTab(colCount, colCount2, tab5);
+
+    cout << endl << "Multiplication of matrix 1 and 5" << endl;
+    MulTab(rowCount, colCount, colCount2, tab1, tab5, tabMultiplication);
+    PrintTab(rowCount, colCount2, tabMultiplication);
 
     // Transposition of matrix 1 with result in transTab
     cout << endl << "Transposition of matrix 1" << endl;
@@ -137,6 +149,21 @@ void TransTab(int rowCount, int colCount, double** tab, double** temp_tab)
         for (int j = 0; j < colCount; j++)
         {
             temp_tab[j][i] = tab[i][j];
+        }
+    }
+}
+void MulTab(int RowCount, int ColCount, int ColCount2, double** Tab, double** Tab2, double** Tab3)
+{
+    for (int i = 0; i < RowCount; ++i)
+    {
+        for (int j = 0; j < ColCount2; ++j)
+        {
+            double sum = 0;
+            for (int k = 0; k < ColCount; ++k)
+            {
+                sum += Tab[i][k] * Tab2[k][j];
+            }
+            Tab3[i][j] = sum;
         }
     }
 }
