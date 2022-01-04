@@ -13,6 +13,7 @@ void PrintTab(int rowCount, int colCount, double** tab);
 void DeleteTab(int rowCount, int colCount, double** tab);
 void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
+void CopyTab(int rowCount, int colCount, double** tab1, double** tab2);
 
 int main()
 {
@@ -22,10 +23,15 @@ int main()
     double** tab1 = CreateTab(rowCount, colCount);
     double** tab2 = CreateTab(rowCount, colCount);
     double** tab3 = CreateTab(rowCount, colCount);      // to keep the result of operations
+    double** tab4 = CreateTab(rowCount, colCount);      // to copy here another values of an array
 
     cout << "Matrix 1" << endl;
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
+
+    cout << endl << "Copied matrix 1 to empty matrix" << endl;
+    CopyTab(rowCount, colCount, tab1, tab4);
+    PrintTab(rowCount, colCount, tab4);
 
     cout << endl << "Matrix 2" << endl;
     RandomTab(rowCount, colCount, tab2);
@@ -43,6 +49,7 @@ int main()
     DeleteTab(rowCount, colCount, tab1);
     DeleteTab(rowCount, colCount, tab2);
     DeleteTab(rowCount, colCount, tab3);
+    DeleteTab(rowCount, colCount, tab4);
 }
 
 // Definitions of the functions (the bodies of the functions)
@@ -102,6 +109,16 @@ void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, doubl
         for (int j = 0; j < colCount; ++j)
         {
             tab3[i][j] = tab1[i][j] - tab2[i][j];
+        }
+    }
+}
+void CopyTab(int rowCount, int colCount, double** tab1, double** tab2)
+{
+    for (int i = 0; i < rowCount; ++i)
+    {
+        for (int j = 0; j < colCount; ++j)
+        {
+            tab2[i][j] = tab1[i][j];
         }
     }
 }
