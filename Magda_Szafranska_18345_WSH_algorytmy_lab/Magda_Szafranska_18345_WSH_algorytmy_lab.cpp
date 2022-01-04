@@ -14,6 +14,7 @@ void DeleteTab(int rowCount, int colCount, double** tab);
 void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 void CopyTab(int rowCount, int colCount, double** tab1, double** tab2);
+void TransTab(int rowCount, int colCount, double** tab, double** temp_tab);
 
 int main()
 {
@@ -24,10 +25,16 @@ int main()
     double** tab2 = CreateTab(rowCount, colCount);
     double** tab3 = CreateTab(rowCount, colCount);      // to keep the result of operations
     double** tab4 = CreateTab(rowCount, colCount);      // to copy here another values of an array
+    double** transTab = CreateTab(colCount, rowCount);  // to transposition an array
 
     cout << "Matrix 1" << endl;
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
+
+    // Transposition of matrix 1 with result in transTab
+    cout << endl << "Transposition of matrix 1" << endl;
+    TransTab(rowCount, colCount, tab1, transTab);
+    PrintTab(colCount, rowCount, transTab);
 
     cout << endl << "Copied matrix 1 to empty matrix" << endl;
     CopyTab(rowCount, colCount, tab1, tab4);
@@ -50,6 +57,7 @@ int main()
     DeleteTab(rowCount, colCount, tab2);
     DeleteTab(rowCount, colCount, tab3);
     DeleteTab(rowCount, colCount, tab4);
+    DeleteTab(colCount, rowCount, transTab);
 }
 
 // Definitions of the functions (the bodies of the functions)
@@ -119,6 +127,16 @@ void CopyTab(int rowCount, int colCount, double** tab1, double** tab2)
         for (int j = 0; j < colCount; ++j)
         {
             tab2[i][j] = tab1[i][j];
+        }
+    }
+}
+void TransTab(int rowCount, int colCount, double** tab, double** temp_tab)
+{
+    for (int i = 0; i < rowCount; i++)
+    {
+        for (int j = 0; j < colCount; j++)
+        {
+            temp_tab[j][i] = tab[i][j];
         }
     }
 }
