@@ -1,4 +1,4 @@
-// Autor: Magda Szafrañska, nr indeksu WSH: 18345
+// Autor: Magda Szafrañska, nr indeksu AHNS (dawniej WSH): 18345
 // Informatyka NST, rok 2, sem. 3
 // Algorytmy, laboratoria nr 1
 
@@ -16,58 +16,68 @@ void AddTab(int rowCount, int colCount, double** tab1, double** tab2, double** t
 void SubtractTab(int rowCount, int colCount, double** tab1, double** tab2, double** tab3);
 void CopyTab(int rowCount, int colCount, double** tab1, double** tab2);
 void TransTab(int rowCount, int colCount, double** tab, double** temp_tab);
-void MulTab(int rowCount, int colCount, int colCount2, double** tab1, double** tab2, double** tab3);    // colCount2 to liczba kolumn wynikowej
+void MulTab(int rowCount, int colCount, int colCount2, double** tab1, double** tab2, double** tab3);    // colCount2 is a number of collumn in the result array
 void ExecutionTimeByGetTickCount64(int startTime, int stopTime);
+void ExecutionTimeByClock(double startTime, double stopTime);
 
 int main()
 {
-    int rowCount = 5;
-    int colCount = 4;
+    int rowCount = 50;
+    int colCount = 10;
     int colCount2 = 3;          // another dimension to multiple arrays
 
     // for measuring the execution time
-    int executableTime;         // the difference between start and stop time by GetTickCount64() function
     int startT1, stopT1;        // start and stop measures by GetTickCount64() function
+    clock_t startT2, stopT2;    // a number of CPU cycles in the moment of start or stop measuring
 
     double** tab1 = CreateTab(rowCount, colCount);
     double** tab2 = CreateTab(rowCount, colCount);
-    double** tab3 = CreateTab(rowCount, colCount);              // to keep the result of operations
-    double** tab4 = CreateTab(rowCount, colCount);              // to copy here another values of an array
-    double** transTab = CreateTab(colCount, rowCount);          // to transposition an array
-    double** tab5 = CreateTab(colCount, colCount2);             // to multiplication for the second array
-    double** tabMultiplication = CreateTab(rowCount, colCount2);// to keep the result of multiplication two arrays
+    double** tab3 = CreateTab(rowCount, colCount);                  // to keep the result of operations
+    double** tab4 = CreateTab(rowCount, colCount);                  // to copy here another values of an array
+    double** transTab = CreateTab(colCount, rowCount);              // to transposition an array
+    double** tab5 = CreateTab(colCount, colCount2);                 // to multiplication for the second array
+    double** tabMultiplication = CreateTab(rowCount, colCount2);    // to keep the result of multiplication two arrays
 
     cout << "Matrix 1" << endl;
-    // start to measure the time
+    // START to measure the time
     startT1 = (int)GetTickCount64();
+    startT2 = clock();
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
-    // stop to measure the time
+    // STOP to measure the time
     stopT1 = (int)GetTickCount64();
+    stopT2 = clock();
     ExecutionTimeByGetTickCount64(startT1, stopT1);
+    ExecutionTimeByClock(startT2, stopT2);
 
     cout << endl << "Matrix 5 to multiplication" << endl;
     RandomTab(colCount, colCount2, tab5);
     PrintTab(colCount, colCount2, tab5);
 
     cout << endl << "Multiplication of matrix 1 and 5" << endl;
-    // start to measure the time
+    // START to measure the time
     startT1 = (int)GetTickCount64();
+    startT2 = clock();
     MulTab(rowCount, colCount, colCount2, tab1, tab5, tabMultiplication);
     PrintTab(rowCount, colCount2, tabMultiplication);
-    // stop to measure the time
+    // STOP to measure the time
     stopT1 = (int)GetTickCount64();
+    stopT2 = clock();
     ExecutionTimeByGetTickCount64(startT1, stopT1);
+    ExecutionTimeByClock(startT2, stopT2);
 
     // Transposition of matrix 1 with result in transTab
     cout << endl << "Transposition of matrix 1" << endl;
-    // start to measure the time
+    // START to measure the time
     startT1 = (int)GetTickCount64();
+    startT2 = clock();
     TransTab(rowCount, colCount, tab1, transTab);
     PrintTab(colCount, rowCount, transTab);
-    // stop to measure the time
+    // STOP to measure the time
     stopT1 = (int)GetTickCount64();
+    stopT2 = clock();
     ExecutionTimeByGetTickCount64(startT1, stopT1);
+    ExecutionTimeByClock(startT2, stopT2);
 
     cout << endl << "Copied matrix 1 to empty matrix" << endl;
     CopyTab(rowCount, colCount, tab1, tab4);
@@ -93,7 +103,7 @@ int main()
     DeleteTab(colCount, rowCount, transTab);
 }
 
-// Definitions of the functions (the bodies of the functions)
+// Definitions of the functions (the bodies)
 double** CreateTab(int rowCount, int colCount)
 {
     double** tab = new double* [rowCount];
@@ -195,7 +205,18 @@ void ExecutionTimeByGetTickCount64(int startTime, int stopTime)
     // changing colour in the console window for better clarity of the code
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
 
-    cout << endl << "Execution time with GetTickCount64() function: " << executableTime << " miliseconds." << endl;
+    cout << "Execution time with GetTickCount64(): \t" << executableTime << " milisecond(s)." << endl;
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+}
+void ExecutionTimeByClock(double startTime, double stopTime)
+{
+    double executableTime = (((double)(stopTime)) - ((double)(startTime))) / CLOCKS_PER_SEC;
+
+    // changing colour in the console window for better clarity of the code
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+
+    cout << "Execution time with clock(): \t\t" << executableTime << " second(s)." << endl;
 
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 }
