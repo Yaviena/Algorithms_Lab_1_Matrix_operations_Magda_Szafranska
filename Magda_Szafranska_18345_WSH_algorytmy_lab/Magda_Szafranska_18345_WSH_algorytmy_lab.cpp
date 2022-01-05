@@ -3,6 +3,7 @@
 // Algorytmy, laboratoria nr 1
 
 #include <iostream>
+#include <windows.h>        // to the GetTickCount() function
 
 using namespace std;
 
@@ -19,9 +20,10 @@ void MulTab(int rowCount, int colCount, int colCount2, double** tab1, double** t
 
 int main()
 {
-    int rowCount = 5;
-    int colCount = 4;
+    int rowCount = 50;
+    int colCount = 10;
     int colCount2 = 3;                                          // another dimension to multiple arrays
+    int executableTime;
 
     double** tab1 = CreateTab(rowCount, colCount);
     double** tab2 = CreateTab(rowCount, colCount);
@@ -32,8 +34,14 @@ int main()
     double** tabMultiplication = CreateTab(rowCount, colCount2);// to keep the result of multiplication two arrays
 
     cout << "Matrix 1" << endl;
+    // start to measure the time
+    int tab1_T1 = (int)GetTickCount64();
     RandomTab(rowCount, colCount, tab1);
     PrintTab(rowCount, colCount, tab1);
+    // stop to measure the time
+    int tab1_T2 = (int)GetTickCount64();
+    executableTime = tab1_T2 - tab1_T1;
+    cout << endl << "Execution time with GetTickCount64()  function: " << executableTime << " milisekund." << endl;
 
     cout << endl << "Matrix 5 to multiplication" << endl;
     RandomTab(colCount, colCount2, tab5);
